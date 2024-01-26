@@ -1,21 +1,31 @@
-variable "lambda_name" {
-  description = "Lambda function name"
+variable "name" {
+  description = "Name of the api"
   type        = string
 }
 
-variable "timeout" {
-  description = "Lambda timeout"
-  type        = number
-  default     = 3
+variable "api_config" {
+  description = "api configuration"
+  type = object({
+    url          = string
+    access_token = string # Access token for the Slack bot
+  })
 }
 
-variable "memory_size" {
-  description = "Lambda memory size"
-  type        = number
-  default     = 128
-}
-
-variable "role_arn" {
-  description = "Lambda IAM role"
+variable "event_pattern" {
+  description = "EventBridge rule event pattern"
   type        = string
+}
+
+variable "input_transformer" {
+  description = "EventBridge target input transformer"
+  type = object({
+    input_paths    = map(any)
+    input_template = string
+  })
+}
+
+variable "sns_topic_to_notify_on_failure" {
+  description = "Arn of the sns topic to notify on lambda invocation failure."
+  type        = string
+  default     = null
 }

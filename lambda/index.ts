@@ -1,27 +1,28 @@
-import { APIGatewayEvent, APIGatewayProxyStructuredResultV2 } from "aws-lambda";
-import AWS from "aws-sdk";
-import { Handler } from "./types";
+import { Handler } from "aws-lambda";
+import axios from 'axios';
+import { Payload, Text } from "./types";
 
-const handler: Handler<APIGatewayEvent, APIGatewayProxyStructuredResultV2> = async (event, context) => {
-  const s3 = new AWS.S3();
+const handler: Handler = async (payload: Payload) => {
+  const apiKey = process.env.API_Key;
+  const apiUrl = process.env.API_URL;
+  const { headers, data } = payload;
 
-  const data = {
-    text: "Hello World",
-    event,
-    context,
-    listBuckets: await s3.listBuckets().promise(),
-  };
+  try {
+    // Make the HTTP request using Axios
+    const response = await axios.post(apiUrl, data, {
+        headers: headers,
+    });
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(data),
-    headers: { "content-type": "application/json" },
-    isBase64Encoded: false,
-  };
+    if (response.status === 200) {
+        console.log('Alert sent to API successfully');
+    } else {
+        console.error(`Failed to send alert to API. Status code: ${response.status}, Response: ${response.data}`);
+    }
+  } catch (error) {
+      console.error('Error sending alert to API:', error.message);
+  }
+
+
 };
 
 exports.handler = handler;
-
-export const __test__ = {
-  handler,
-};
