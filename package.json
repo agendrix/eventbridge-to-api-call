@@ -6,19 +6,19 @@
     "test:watch": "yarn test --watch --watch-extensions ts",
     "build": "rm -rf ./dist && yarn tsc",
     "postbuild": "cp package.json yarn.lock LICENSE README.md ./dist && cd dist && yarn install --production",
-    "zip": "cd dist && mkdir -p ../out && zip -q -FSr ../out/lambda .",
+    "zip": "cd dist && mkdir -p ../terraform && zip -q -FSr ../terraform/lambda .",
     "dist": "yarn build && yarn zip"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.64",
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^14.11.2",
-    "aws-sdk": "^2.785.0",
-    "mocha": "^6.2.0",
-    "prettier": "^2.1.2",
+    "@types/aws-lambda": "^8.10.132",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.10",
+    "aws-sdk": "^2.1545.0",
+    "mocha": "^10.2.0",
+    "prettier": "^3.2.4",
     "request": "^2.88.2",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "axios": "^1.6.7"

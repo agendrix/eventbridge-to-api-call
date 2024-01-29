@@ -1,10 +1,10 @@
 import { Handler } from "aws-lambda";
-import axios from 'axios';
-import { Payload, Text } from "./types";
+import axios, { AxiosHeaders } from 'axios';
+import { Payload } from "./types";
 import { error } from "console";
 
 const handler: Handler = async (payload: Payload) => {
-  const apiKey = process.env.API_Key;
+//   const apiKey = process.env.API_Key;
   const apiUrl = process.env.API_URL;
   const { headers, data } = payload;
 
@@ -15,7 +15,7 @@ const handler: Handler = async (payload: Payload) => {
     }
     // Make the HTTP request using Axios
     const response = await axios.post(apiUrl, data, {
-        headers: headers,
+        headers: headers as unknown as AxiosHeaders,
     });
 
     if (response.status === 200) {
