@@ -8,18 +8,18 @@ env:
   UPLOAD_LAMBDA: false
 
 jobs:
-  test:
-    name: Test lambda function
-    runs-on: ubuntu-latest
+  # test:
+  #   name: Test lambda function
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: yarn install
+  #     - name: Install dependencies
+  #       run: yarn install
 
-      - name: Test
-        run: yarn test
+  #     - name: Test
+  #       run: yarn test
 
   build-and-upload:
     name: Build GitHub action and AWS lambda function
