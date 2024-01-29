@@ -23,7 +23,6 @@ jobs:
 
   build-and-upload:
     name: Build GitHub action and AWS lambda function
-    needs: test
     if: "false" # To be removed
     runs-on: ubuntu-latest
 
