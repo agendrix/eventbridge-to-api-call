@@ -9,7 +9,10 @@ export type Text = {
 }
 
 export type Payload = {
-  headers: JSON,
+  headers: {
+    "Content-Type": string,
+    "Authorization": string
+  },
   data: JSON ,
  
 }
