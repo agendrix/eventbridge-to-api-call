@@ -9,7 +9,7 @@ export type Text = {
 }
 
 export type Payload = {
-  headers: Array<Text>,
-  data: Array<Text> ,
+  headers: JSON,
+  data: JSON ,
  
 }
