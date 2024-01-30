@@ -13,8 +13,8 @@ resource "aws_lambda_function" "lambda" {
 
   environment {
     variables = {
-      API_ACCESS_TOKEN = var.api_config.access_token
-      URL              = var.api_config.url
+      API_URL = var.api_config.api_url
+      API_KEY = var.api_config.api_key
     }
   }
 

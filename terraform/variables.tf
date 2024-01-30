@@ -6,8 +6,8 @@ variable "name" {
 variable "api_config" {
   description = "api configuration"
   type = object({
-    url          = string
-    access_token = string # Access token for the Slack bot
+    api_url = string
+    api_key = string
   })
 }
 

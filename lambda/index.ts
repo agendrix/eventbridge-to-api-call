@@ -4,7 +4,7 @@ import { Payload } from "./types";
 import { error } from "console";
 
 const handler: Handler = async (payload: Payload) => {
-  const apiKey = process.env.API_Key;
+  const apiKey = process.env.API_KEY;
   const apiUrl = process.env.API_URL;
   const { headers, data } = payload;
   headers.Authorization = headers.Authorization + apiKey;
