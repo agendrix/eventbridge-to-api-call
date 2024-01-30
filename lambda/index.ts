@@ -14,7 +14,7 @@ const handler: Handler = async (payload: Payload) => {
         throw error;
     }
     // Make the HTTP request using Axios
-    const response = await axios.post(apiUrl, data, {
+    const response = await axios.post(apiUrl, JSON.stringify(data), {
         headers: headers,
     });
 
