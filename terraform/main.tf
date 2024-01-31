@@ -101,3 +101,12 @@ resource "aws_cloudwatch_log_group" "log_group" {
   name              = "/aws/lambda/${aws_lambda_function.lambda.function_name}"
   retention_in_days = 14
 }
+
+data "aws_iam_policy" "write_logs_access" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "write_logs_access" {
+  role       = aws_iam_role.lambda_execution_role.id
+  policy_arn = data.aws_iam_policy.write_logs_access.arn
+}

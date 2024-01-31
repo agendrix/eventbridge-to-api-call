@@ -11,15 +11,15 @@ const handler: Handler = async (payload: Payload) => {
   try {
     if (!apiUrl)
     {
-        throw error;
+        throw new error('API URL is missing');
     }
-    // Make the HTTP request using Axios
+
     const response = await axios.post(apiUrl, JSON.stringify(data), {
         headers: headers,
     });
 
-    if (response.status === 200) {
-        console.log('Alert sent to API successfully');
+    if (response.status === 200 || response.status === 202) {
+        console.log(`Alert sent to API successfully with status ${response.status}`);
     } else {
         console.error(`Failed to send alert to API. Status code: ${response.status}, Response: ${response.data}`);
     }
