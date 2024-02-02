@@ -1,6 +1,6 @@
 {
   "name": "terraform-aws-lambda",
-  "version": "v0.1.1",
+  "version": "v0.1.2",
   "author": "Claude Garrison-Pelletier <c.garrison-pelletier@agendrix.com>",
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
