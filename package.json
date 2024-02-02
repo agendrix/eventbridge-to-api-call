@@ -1,6 +1,7 @@
 {
   "name": "terraform-aws-lambda",
   "version": "v0.1.1",
+  "author": "Claude Garrison-Pelletier <c.garrison-pelletier@agendrix.com>",
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
     "test:watch": "yarn test --watch --watch-extensions ts",
@@ -13,7 +14,6 @@
     "@types/aws-lambda": "^8.10.132",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.10",
-    "aws-sdk": "^2.1545.0",
     "mocha": "^10.2.0",
     "prettier": "^3.2.4",
     "request": "^2.88.2",
