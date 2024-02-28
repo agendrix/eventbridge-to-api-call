@@ -1,35 +1,77 @@
-# Terraform AWS Lambda
+# Eventbridge to API call
 
-_Template repository for creating a TypeScript AWS lambda function with Terraform_
+_An AWS Lambda for sending EventBridge events to API endpoint
 
-![Release](https://github.com/agendrix/terraform-aws-lambda/workflows/Release/badge.svg) ![Tests](https://github.com/agendrix/terraform-aws-lambda/workflows/Tests/badge.svg?branch=main)
+![Release](https://github.com/agendrix/eventbridge-slack-notifier/workflows/Release/badge.svg) ![Tests](https://github.com/agendrix/eventbridge-slack-notifier/workflows/Tests/badge.svg?branch=main)
+
+## Description
+
+The goal of this module is to send a POST to a specific API endpoint when an EventBridge [rule](https://docs.aws.amazon.com/eventbridge/latest/userguide/create-eventbridge-rule.html) is triggered.
+
+## Lambda payload
+
+The lambda function payload is an object with the following type:
+```ts
+type Payload = {
+  headers: {
+    "Authorization": string,
+    [key: string]: string
+  };
+  data: JSON;
+};
+```
+`headers`: Need at least the key `Authorization` to access the API
+
+`data`: All the data you want to send to the API. Can be empty
 
 ## How to use with Terraform
-
 Add the module to your [Terraform](https://www.terraform.io/) project:
 
-```terraform
-module "terraform_aws_lambda" {
-  source      = "git@github.com:agendrix/terraform-aws-lambda.git//terraform?ref=v0.2.0"
-  lambda_name = "my-typescript-lambda"
-  role_arn    = aws_iam_role.iam_for_lambda.role_arn
+```HCL
+module "eventbridge_logger_opgenie" {
+  source                         = "github.com/agendrix/eventbridge-to-make-api-call.git//terraform?ref=v0.1.2"
+  sns_topic_to_notify_on_failure = <aws_sns_topic_arn>
+  name                           = "Ressource Name"
+
+  api_config = {
+    api_url = "<MY_API_URL>"
+    api_key = "<MY_API_KEY_SECRET>"
+  }
+
+  event_pattern = jsonencode({
+    source      = ["aws.cloudwatch"]
+    detail-type = ["CloudWatch Alarm State Change"]
+  })
+
+  input_transformer = {
+    input_paths = {
+      source                     = "$.source"
+      time                       = "$.time"
+      alarm                      = "$.detail.alarmName"
+    }
+
+    input_template = <<EOF
+    {
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Key "
+      },
+      "data": {
+        "message": "My Message <source>",
+        "description": "My Description: <time> <alarm>",
+      }
+    } 
+    EOF
+  }
 }
 ```
 
-See [Resource: aws_lambda_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) for more information about the required `aws_iam_role`.
+### Resources:
 
-In order to be able to receive http requests to the lambda, you will need to hook it up with an AWS API Gateway.
-You can do so by following this guide: [Serverless Applications with AWS Lambda and API Gateway](https://learn.hashicorp.com/tutorials/terraform/lambda-api-gateway).
+[How to create a rule pattern](https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-and-event-patterns.html)
 
-After applying the terraform plan, a dummy lambda will be available in the [AWS Lambda Console](https://console.aws.amazon.com/lambda/).
+[Input transformer](https://docs.aws.amazon.com/eventbridge/latest/userguide/transform-input.html)
 
-## Deploying a new version of the lambda
+[Input transformer Terraform](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target#input_transformer)
 
-- Make sure you have all the required [GitHub Actions secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) for [`.github/workflows/release.yml`](.github/workflows/release.yml) to work.
-- Follow [CONTRIBUTING.md / Publish a new release](./CONTRIBUTING.md#publish-a-new-release) for deploying a new release.
-
----
-
-Your AWS lambda should now be available at https://console.aws.amazon.com/lambda/.
-
-Logs from the lambda will be available in AWS CloudWatch `/aws/lambda/${yourLambdaName}` log group.
+[Common input transformer issues](https://docs.aws.amazon.com/eventbridge/latest/userguide/transform-input.html#transform-input-issues)
