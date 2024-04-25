@@ -18,13 +18,13 @@ const handler: Handler = async (payload: Payload) => {
         headers: headers,
     });
 
-    if (response.status === 200 || response.status === 202) {
-        console.log(`Alert sent to API successfully with status ${response.status}`);
+    if (response.status >= 200 && response.status <= 206) {
+        console.log(`Resquest sent to API successfully with status ${response.status}`);
     } else {
-        console.error(`Failed to send alert to API. Status code: ${response.status}, Response: ${response.data}`);
+        console.error(`Failed to send resquest to API. Status code: ${response.status}, Response: ${response.data}`);
     }
   } catch (error) {
-      console.error('Error sending alert to API:', error.message);
+      console.error('Error sending resquest to API:', error.message);
   }
 
 
