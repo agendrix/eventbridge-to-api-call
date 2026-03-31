@@ -14,13 +14,12 @@
     "@types/aws-lambda": "^8.10.132",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.10",
-    "mocha": "^10.2.0",
+    "mocha": "^11.7.5",
     "prettier": "^3.2.4",
-    "request": "^2.88.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "axios": "^1.8.2"
+    "axios": "1.14.0"
   }
 }
